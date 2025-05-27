@@ -1,19 +1,37 @@
+
+  
+ 
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Currency Converter</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 30px;
+      margin: 40px;
+      text-align: center;
     }
+
     input, select, button {
       padding: 10px;
-      margin: 5px;
+      margin: 10px;
       font-size: 16px;
     }
+
+    button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
     #result {
       margin-top: 20px;
       font-size: 18px;
@@ -22,10 +40,14 @@
   </style>
 </head>
 <body>
+
   <h2>Currency Converter</h2>
 
   <input id="amount" type="number" placeholder="Amount" />
 
+  <br />
+
+  <label for="from">From:</label>
   <select id="from">
     <option value="USD">USD - US Dollar</option>
     <option value="EUR">EUR - Euro</option>
@@ -39,6 +61,7 @@
     <option value="INR">INR - Indian Rupee</option>
   </select>
 
+  <label for="to">To:</label>
   <select id="to">
     <option value="USD">USD - US Dollar</option>
     <option value="EUR">EUR - Euro</option>
@@ -52,10 +75,41 @@
     <option value="INR">INR - Indian Rupee</option>
   </select>
 
+  <br />
+
   <button onclick="convert()">Convert</button>
 
   <p id="result"></p>
 
-  <script src="script.js"></script>
+  <script>
+    async function convert() {
+      const amount = document.getElementById("amount").value;
+      const from = document.getElementById("from").value;
+      const to = document.getElementById("to").value;
+
+      if (!amount || !from || !to) {
+        document.getElementById("result").innerText = "Please fill all fields.";
+        return;
+      }
+
+      try {
+        const apiKey = "YOUR_API_KEY"; // Replace with your actual API key
+        const url = `https://v6.exchangerate-api.com/v6/${apiKey}/pair/${from}/${to}/${amount}`;
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (data.result === "success") {
+          document.getElementById("result").innerText = `${amount} ${from} = ${data.conversion_result} ${to}`;
+        } else {
+          document.getElementById("result").innerText = "Conversion failed.";
+        }
+      } catch (error) {
+        document.getElementById("result").innerText = "Error fetching data.";
+        console.error("Error:", error);
+      }
+    }
+  </script>
+
 </body>
 </html>
+
