@@ -2,7 +2,7 @@ function convert() {
   const amount = document.getElementById("amount").value;
   const from = document.getElementById("from").value.toUpperCase();
   const to = document.getElementById("to").value.toUpperCase();
-  const apiKey = "YOUR_API_KEY_HERE"; // 👈 Replace with your actual key
+  const apiKey = "938e7e711bbe4256585a9bbc"; // 👈 Replace with your actual key
 
   const url = `https://v6.exchangerate-api.com/v6/${apiKey}/pair/${from}/${to}/${amount}`;
 
